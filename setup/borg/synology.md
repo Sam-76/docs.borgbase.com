@@ -62,6 +62,7 @@ source_directories:
     - /volume1/data
     - /volume1/more-data
 
+# Folders or patterns to exclude within 
 exclude_patterns:
     - /volume1/more-data/path-to-exclude
 
