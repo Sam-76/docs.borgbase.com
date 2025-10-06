@@ -56,38 +56,39 @@ You will end up with two files: The private key, `id_synology` and the public ke
 Next, add a Borgmatic config file in the shared folder created above. You can copy a template from the BorgBase web interface under *Setup* or from [Borgmatic's website](https://torsion.org/borgmatic/). A minimal example would be:
 
 ```
-location:
-    # List of source directories to backup.
-    source_directories:
-        - /volume1/data
-        - /volume1/more-data
 
-    # Paths of local or remote repositories to backup to.
-    repositories:
-        - xxxxx@xxxxx.repo.borgbase.com:repo
+# List of source directories to backup.
+source_directories:
+    - /volume1/data
+    - /volume1/more-data
 
-storage:
-    # Point to your private key
-    ssh_command: ssh -i /path/to/private/key
+exclude_patterns:
+    - /volume1/more-data/path-to-exclude
 
-    # Add passphrase used during repo init
-    encryption_passphrase: "my-secret-passphrase-8859849"
+# Paths of local or remote repositories to backup to.
+repositories:
+    - path: xxxxx@xxxxx.repo.borgbase.com:repo
 
-retention:
-    # Retention policy for how many backups to keep.
-    keep_daily: 7
-    keep_weekly: 4
-    keep_monthly: 6
+# Point to your private key
+ssh_command: ssh -i /path/to/private/key
 
-consistency:
-    # List of checks to run to validate your backups.
-    checks:
-        - repository
+# Add passphrase used during repo init
+encryption_passphrase: "my-secret-passphrase-8859849"
+
+# Retention policy for how many backups to keep.
+keep_daily: 7
+keep_weekly: 4
+keep_monthly: 6
+
+# List of checks to run to validate your backups.
+checks:
+    - repository
 ```
 
 See [here](https://torsion.org/borgmatic/docs/reference/configuration/) for all available options. You will need to adjust at a minimum:
 
 - Folders to back up under `source_directories`
+- Folders or patterns to exclude within `source_directories`
 - Path to private SSH key under `ssh_command`
 - BorgBase repository URL to use under `repositories`. It's also possible to use multiple repos to achieve additional redundancy.
 - Add the encryption passphrase used during repo initilization under `encryption_passphrase`
